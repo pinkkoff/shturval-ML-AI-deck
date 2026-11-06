@@ -383,8 +383,7 @@ html.js .slide:not(.active) .bars .b i { transform: scaleY(0); }
 
 
 /* ===== Управление ===== */
-.ui { position: fixed; z-index: 10; left: 50%; transform: translateX(-50%); bottom: 12px; display: flex; gap: 8px; align-items: center; opacity: .25; transition: opacity .2s; }
-.ui:hover, .ui:focus-within { opacity: 1; }
+.ui { position: fixed; z-index: 10; left: 50%; transform: translateX(-50%); bottom: 12px; display: flex; gap: 8px; align-items: center; }
 .ui button { width: 44px; height: 44px; border-radius: 10px; border: 0; background: rgba(255,255,255,.12); color: #fff; font: 700 18px var(--f-sans); cursor: pointer; }
 .ui button:hover { background: var(--tint-2); }
 .ui .cnt { font: 500 14px var(--f-sans); color: var(--muted); min-width: 56px; text-align: center; font-variant-numeric: tabular-nums; }
@@ -1199,7 +1198,7 @@ a.card.go:hover { background-color: rgba(52,52,52,.5); }
 .ui .tg { width: auto; padding: 0 14px; font-size: 14px; font-weight: 700; }
 .ui .tg[aria-pressed="true"] { background: var(--tint-2); color: var(--shturval); }
 /* Телефон: только стрелки, счётчик и логотипы – иначе панель не помещается в ширину */
-@media (max-width: 560px) { .ui { gap: 6px; bottom: max(12px, env(safe-area-inset-bottom)); opacity: .6; } #nbtn, #fs, #hbtn, #notes, #help { display: none !important; } .ui .cnt { min-width: 48px; } }
+@media (max-width: 560px) { .ui { gap: 6px; bottom: max(12px, env(safe-area-inset-bottom)); } .ui > :not(.dl) { opacity: .6; } .ui .dl { padding: 0 12px; } .ui .dl .dl-w { display: none; } #nbtn, #fs, #hbtn, #notes, #help { display: none !important; } .ui .cnt { min-width: 48px; } }
 #help { position: fixed; z-index: 11; right: 16px; bottom: 68px; padding: 16px 20px; border-radius: 14px; background: rgba(12,12,12,.94); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); font: 500 15px/1.7 var(--f-sans); color: var(--muted); display: none; }
 #help.show { display: block; }
 #help b { color: #fff; display: inline-block; min-width: 64px; }
@@ -1947,6 +1946,11 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
 .ui .dl svg { width: 16px; height: 16px; flex: none; }
 .ui .dl[aria-busy] { opacity: .6; cursor: progress; }
 .ui .dl.on-poster { background: rgba(0,0,0,.12); color: #000; }
+/* пока панель приглушена, у «Скачать PDF» горит только надпись, а подложка в тени вместе с остальными кнопками и проявляется при наведении */
+.ui .dl { transition: background .2s; }
+.ui:not(:hover):not(:focus-within) .dl { background: rgba(255,255,255,.03); }
+.ui:not(:hover):not(:focus-within) .dl.on-poster { background: rgba(0,0,0,.03); }
+@media (max-width: 560px) { .ui > :not(.dl) { opacity: .6; } }
 @media print { .c6-mark::before { display: none; } }
 @media print { .deck-bg { display: none; } .pp-poster::before { left: 0; top: 0; width: 1920px; height: 1080px; transform: none; background: radial-gradient(circle 545px at 50% 58%, #0a2c29 0%, #061c1a 29%, #031110 60%, #000 100%) !important; } }
 /* лицензия: три карточки в стиле прежних пяти */
@@ -1959,7 +1963,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
 .mlu { --a: #00776c; --a2: #0fb3a3; --af: rgba(28,242,222,.16); --bg: #f3f5f6; --pn: #fff; --bd: #e3e7ea; --bd2: #eef1f3; --tx: #1d2329; --mu: #5b6670; --ok: #13a35a; --err: #d64545; --warn: #d98a00;
   position: relative; flex: 1; min-height: 300px; height: 100%; border-radius: 16px; overflow: hidden; background: var(--bg); cursor: default; }
 .tablet .mlu { border-radius: 18px; }
-.mlu-s { position: absolute; left: 0; top: 0; width: calc(100% / var(--k)); height: calc(100% / var(--k)); transform: scale(var(--k)); transform-origin: 0 0; display: grid; grid-template-columns: var(--sw, 228px) minmax(0, 1fr); color: var(--tx); font-family: var(--f-sans); font-size: 14px; line-height: 1.35; background: radial-gradient(900px 520px at 100% 0, rgba(28,242,222,.13), transparent 62%), var(--bg); }
+.mlu-s { position: absolute; left: 0; top: 0; width: var(--cw, calc(100% / var(--k))); height: var(--ch, calc(100% / var(--k))); transform: scale(var(--k)) translate(calc(-1 * var(--ox, 0px)), calc(-1 * var(--oy, 0px))); transform-origin: 0 0; display: grid; grid-template-columns: var(--sw, 228px) minmax(0, 1fr); color: var(--tx); font-family: var(--f-sans); font-size: 14px; line-height: 1.35; background: radial-gradient(900px 520px at 100% 0, rgba(28,242,222,.13), transparent 62%), var(--bg); }
 .mlu button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
 .mlu [hidden] { display: none !important; }
 .mlu :is(h4, h5, h6, p, ul, ol, dl, dd) { margin: 0; }
@@ -2067,7 +2071,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
 .mfl-h { display: flex; align-items: center; gap: 12px; } .mfl-h h4 { font-size: 26px; font-weight: 700; color: #11171c; }
 .mfl-h .hi { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--af); color: var(--a); }
 .mfl-tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--bd); }
-.mfl-tabs span { padding: 0 2px 9px; font-weight: 700; color: #8a949c; border-bottom: 3px solid transparent; }
+.mfl-tabs span { padding: 0 2px 9px; font-weight: 700; color: #5b6670; border-bottom: 3px solid transparent; }
 .mfl-tabs span.on { color: #11171c; border-color: var(--a2); }
 .mfl-fl { display: flex; align-items: center; gap: 10px; }
 .mfl-fl .lbl { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 10px; background: var(--pn); box-shadow: inset 0 0 0 1px #e1e6ea; font-weight: 500; }
@@ -2107,7 +2111,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
 .am-h { display: flex; align-items: center; gap: 14px; }
 .am-h h4 { font-size: 28px; font-weight: 700; color: #11171c; letter-spacing: -.01em; }
 .am-back { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: var(--a); box-shadow: inset 0 0 0 2px var(--a2); font-weight: 700; }
-.am-ok { padding: 4px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 700; color: var(--ok); background: rgba(19,163,90,.12); }
+.am-ok { padding: 4px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 700; color: #0b6e3b; background: rgba(19,163,90,.12); }
 .am-cols { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; }
 .am-main { display: flex; flex-direction: column; gap: 14px; padding: 18px 20px; min-height: 0; }
 .am-f { display: grid; gap: 7px; }
@@ -2135,7 +2139,9 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
 .am-who .x { flex: none; width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; color: #8a949c; opacity: 0; transition: opacity .15s, background .15s; }
 .am-who:hover .x { opacity: 1; } .am-who .x:hover { background: #f0f3f5; color: var(--err); }
 .mlu .am-add { display: flex; align-items: center; gap: 8px; width: calc(100% - 36px); margin: 6px 18px 14px; padding: 8px 12px; border-radius: 10px; font-weight: 700; color: var(--a) !important; background: var(--af) !important; }
-@media print { .mlu-s { transform: none; zoom: var(--k); width: 100%; height: 100%; } }
+@media print { .mlu-s { transform: none; zoom: var(--k); width: var(--cw, 100%); height: var(--ch, 100%); margin: calc(-1 * var(--oy, 0px)) 0 0 calc(-1 * var(--ox, 0px)); } }
+/* фрагмент экрана: мягкий край снизу – экран продолжается */
+.mlu.crop::after { content: ""; position: absolute; z-index: 6; left: 0; right: 0; bottom: 0; height: 64px; background: linear-gradient(rgba(243,245,246,0), #f3f5f6 85%); pointer-events: none; }
 @media print { .mlu-card { box-shadow: inset 0 0 0 1px #e6eaed !important; } .kf-menu, .mfl-tip, .mfl-toast { display: none !important; } }
 </style>
 </head>
@@ -2155,8 +2161,8 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
   <div class="c5-stat rv" style="--d:260ms"><b>до&nbsp;80%</b><span>экономии на&nbsp;GPU и&nbsp;эксплуатации</span></div>
 </section>
 
-<section class="slide g-tl" id="ideas3" data-title="Три идеи">
-  <div class="top"><div class="eyebrow">Три идеи Штурвала ML/AI</div><img src="assets/shturval-horizontal-on-dark.svg" alt="Штурвал" class="logo"></div>
+<section class="slide g-tl" id="ideas3" data-title="3 преимущества">
+  <div class="top"><div class="eyebrow">3 преимущества Штурвала ML/AI</div><img src="assets/shturval-horizontal-on-dark.svg" alt="Штурвал" class="logo"></div>
   <div class="id4">
     <div class="id4-l">
       <div class="id4-r rv" style="--d:60ms"><span class="oct-n">1</span><div><p class="id4-t">Весь ML&#8209;стек<br><span class="hl">из&nbsp;коробки</span></p><p class="id4-d">Администратор включает ML в&nbsp;кластере. Драйверы, Kubeflow и&nbsp;MLflow ставит платформа.</p></div></div>
@@ -2378,7 +2384,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
         <section class="mlu-card am-main">
           <div class="am-f"><small>Уровень прав доступа</small>
             <div class="mlu-seg" data-lvl><button>Платформа</button><button>Тенант</button><button class="on">Кластер</button><button>Неймспейс</button></div></div>
-          <div class="am-f"><small>Описание</small><p data-desc>Полный доступ ко&nbsp;всем ресурсам на&nbsp;уровне выбранного кластера</p></div>
+          <div class="am-f"><small>Описание</small><p data-desc>Полный доступ ко&nbsp;всем ресурсам на&nbsp;уровне выбранного&nbsp;кластера</p></div>
           <div class="am-roles">
             <div><small>Kubernetes</small><b data-r="k8s">cluster-admin</b></div>
             <div><small>Роль в&nbsp;Argo CD</small><b data-r="argo">admin</b></div>
@@ -2475,9 +2481,10 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
     nvidia.com/gpu.product: NVIDIA-A100-SXM4-80GB
   <span class="y">tolerations:</span>
     - <span class="y">key:</span> nvidia.com/gpu
-      <span class="y">effect:</span> NoSchedule
+      <span class="y">operator:</span> Exists
   <span class="y">containers:</span>
     - <span class="y">name:</span> train
+      <span class="y">image:</span> pytorch/pytorch
       <span class="y">resources:</span>
         <span class="y">limits:</span>
           <span class="y">nvidia.com/gpu:</span> 1</pre></div>
@@ -2488,6 +2495,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
     nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
   <span class="y">containers:</span>
     - <span class="y">name:</span> train
+      <span class="y">image:</span> pytorch/pytorch
       <span class="y">resources:</span>
         <span class="y">limits:</span>
           <span class="y">nvidia.com/gpu:</span> 4
@@ -2498,6 +2506,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
 <span class="y">spec:</span>
   <span class="y">containers:</span>
     - <span class="y">name:</span> notebook
+      <span class="y">image:</span> jupyter/scipy-notebook
       <span class="y">resources:</span>
         <span class="y">limits:</span>
           <span class="y">nvidia.com/mig-1g.10gb:</span> 1
@@ -2510,6 +2519,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
     nvidia.com/gpu.sharing-strategy: time-slicing
   <span class="y">containers:</span>
     - <span class="y">name:</span> notebook
+      <span class="y">image:</span> jupyter/scipy-notebook
       <span class="y">resources:</span>
         <span class="y">limits:</span>
           <span class="y">nvidia.com/gpu:</span> 1
@@ -2525,8 +2535,8 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
   <div class="mt3">
     <div class="tablet mt3-ui rv" style="--d:100ms"><div class="mlu" id="mlu-mf12" data-mf="rec" style="--k:.75"></div></div>
     <ul class="mt3-l">
-      <li class="rv" style="--d:140ms"><b>Запрос</b><span class="tool">limits: nvidia.com/gpu</span><p>Задача команды запрашивает карту или&nbsp;её долю: MIG / Time&#8209;slice</p></li>
-      <li class="rv" style="--d:180ms"><b>Квота</b><span class="tool">Profile · quota</span><p>Планировщик выдаёт ресурс в&nbsp;пределах лимита профиля</p></li>
+      <li class="rv" style="--d:140ms"><b>Запрос</b><span class="tool">limits: nvidia.com/gpu</span><p>Задача команды запрашивает карту или&nbsp;её&nbsp;долю: MIG&nbsp;/&nbsp;Time&#8209;slice</p></li>
+      <li class="rv" style="--d:180ms"><b>Квота</b><span class="tool">Profile · quota</span><p>Планировщик выдаёт ресурс в&nbsp;пределах лимита&nbsp;профиля</p></li>
       <li class="rv" style="--d:220ms"><b>Метрики</b><span class="tool">DCGM · Prometheus</span><p>Загрузка, память и&nbsp;простой по&nbsp;каждой карте и&nbsp;неймспейсу</p></li>
       <li class="rv" style="--d:260ms"><b>Учёт</b><span class="tool">метеринг</span><p>По&nbsp;данным о&nbsp;потреблении ведут внутренний учёт и&nbsp;планируют закупки</p></li>
     </ul>
@@ -3334,7 +3344,7 @@ a.go:focus-visible, .ip > div:focus-visible { outline-color: var(--shturval); ou
     var LV = {
       'Платформа': ['Полный доступ ко&nbsp;всем ресурсам платформы и&nbsp;всех клиентских кластеров', 'cluster-admin', 'admin', 'kubeflow-admin'],
       'Тенант': ['Полный доступ к&nbsp;кластерам и&nbsp;ресурсам выбранного тенанта', 'cluster-admin', 'admin', 'kubeflow-admin'],
-      'Кластер': ['Полный доступ ко&nbsp;всем ресурсам на&nbsp;уровне выбранного кластера', 'cluster-admin', 'admin', 'kubeflow-admin'],
+      'Кластер': ['Полный доступ ко&nbsp;всем ресурсам на&nbsp;уровне выбранного&nbsp;кластера', 'cluster-admin', 'admin', 'kubeflow-admin'],
       'Неймспейс': ['Работа с&nbsp;ресурсами выбранного неймспейса: ноутбуки, конвейеры, модели', 'admin (ns)', 'readonly', 'kubeflow-edit']
     };
     var YAML = {
